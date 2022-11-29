@@ -22,8 +22,6 @@ def home(request):
     # return HttpResponse('<h1> Blog Home </h1>')
     #return render(request, 'blog/home.html')
     context ={}
-    if Post.objects:
-        print("objectss ok")
     all_objects =Post.objects.all()
     if len(all_objects) > 0:
 
