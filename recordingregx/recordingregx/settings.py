@@ -11,26 +11,45 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
-
+from os import getenv, path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
+## get all the env variables
+env_secret_key = getenv('RECORDINGREGX_LOCAL_SECRET_KEY')
+
+env_sql_server_ip =   getenv('SQL_SERVER_IP')
+env_sql_server_user = getenv('SQL_SERVER_USER')
+env_sql_server_pass = getenv('SQL_SERVER_PW')
+local_ip_addr = getenv('LOCAL_IP_ADDR')
+email_passwd = getenv('DJ_EMAIL_PASSWORD')
+
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-^y*pqs!vsye*x=-g$a!!u%1d)f_rj&3v7^^!egzrd)pu=^31fj'
+if env_secret_key:
+    SECRET_KEY = env_secret_key
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+if (local_ip_addr): ## if running on deploy server deactivate debug
+    DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [local_ip_addr,"127.0.0.1","localhost"]
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    # own apps
+    'blog.apps.BlogConfig',
+    'users.apps.UsersConfig',
+    'crispy_forms',
+    # system
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -73,12 +92,30 @@ WSGI_APPLICATION = 'recordingregx.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+use_local_database = True
+if use_local_database:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
+else: 
+
+
+    DATABASES = {  
+        'default': {  
+            'ENGINE': 'django.db.backends.mysql',  
+            'NAME': 'scorebook_db',  
+            'USER': env_sql_server_user,  
+            'PASSWORD': env_sql_server_pass,  
+            'HOST': env_sql_server_ip,  
+            'PORT': '3307',  
+            'OPTIONS': {  
+                'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"  
+            }  
+        }  
+    }  
 
 
 # Password validation
@@ -105,7 +142,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/London'
 
 USE_I18N = True
 
@@ -115,9 +152,34 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
+MEDIA_URL = '/media/' #directory inside media for pics
+
+JS_URL = '/js/'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# some global directories
+STATIC_ROOT = path.join(BASE_DIR, 'static')
+MEDIA_ROOT = path.join(BASE_DIR, 'media')
+
+
+# email server settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.strato.de'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'info@bohrlab.de'
+EMAIL_HOST_PASSWORD = email_passwd
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+EMAIL_USE_SSL = False  
+
+EMAIL_USE_EMAIL = False
+if email_passwd:
+    EMAIL_USE_EMAIL = True
