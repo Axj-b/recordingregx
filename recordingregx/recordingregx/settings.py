@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     # own apps
     'blog.apps.BlogConfig',
     'users.apps.UsersConfig',
+    'medialibrary.apps.MedialibraryConfig',
     'crispy_forms',
     'taggit',
     # system

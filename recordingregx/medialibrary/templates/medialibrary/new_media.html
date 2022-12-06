@@ -1,0 +1,42 @@
+{% extends "blog/base.html" %} {% block content %} {% load static %}
+<div class="p-2 bg-light border">
+    <div class=" container">
+        <div class="mb-3">
+            <label for="device_name" class="form-label">Device Name</label>
+            <input type="text" class="form-control " id="device_name" placeholder="KK-Spopi">
+        </div>
+        <div class="mb-3 ">
+            <label for="device_brand" class="form-label ">Marke</label>
+            <input type="text" class="form-control" id="device_brand" placeholder="Walther">
+        </div>
+        <div class=" mb-3 ">
+            <label for="device_model" class="form-label ">Model</label>
+            <input type="text " class="form-control" id="device_model" placeholder="GSP">
+        </div>
+        <div class="mb-3">
+            <label for="device_caliber" class="form-label ">Kaliber</label>
+            <input type="text " class="form-control" id="device_caliber" placeholder="0.22">
+        </div>
+        <div class="mb-3">
+            <label for="device_notes" class="form-label">Notiz</label>
+            <textarea class="form-control " id="device_notes" rows="3"></textarea>
+        </div>
+        <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="check_favorite">
+            <label class="form-check-label" for="check_favorite">
+          Als Favorite auswählen
+        </label>
+        </div>
+    </div>
+</div>
+<div class="p-2 bg-light border ">
+
+    <a class=" btn btn-danger btn-lg btn-block " id="btn_cancel" href="{% url 'equipment-overview'%} " role="button">Abbrechen</a>
+    <!--a class="btn btn-success btn-lg btn-block " style="padding-left: 5rem; padding-right:5rem " href="{% url 'scores-overview'%} " role="button ">OK</a-->
+    <a class="btn btn-success btn-lg btn-block " id="btn_accept" style="padding-left: 5rem; padding-right:5rem " onclick="processData('{% url 'equipment-overview' %}');" role="button">Hinzufügen</a>
+</div>
+    {% endblock content %} {% block js_content %} {% load static %} {% load static %}
+    <script type="text/javascript " src="{% static 'equipment/js/new_device.js' %} ">
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    </script>
+    {% endblock %}

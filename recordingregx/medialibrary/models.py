@@ -1,9 +1,11 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
+from django.urls import reverse
+import uuid # Required for unique instance
+
 from taggit.managers import TaggableManager
 # Create your models here.
-
 
 class Media(models.Model):
     # must
@@ -12,6 +14,10 @@ class Media(models.Model):
     date_recorded = models.DateTimeField(default=timezone.now)
     author  = models.ForeignKey(User, on_delete=models.RESTRICT)
     descripttion = models.TextField()
+
+    sw_version = models.TextField(max_length = 15)
+
+    id = models.UUIDField(primary_key=True, editable =False, default=uuid.uuid4, help_text='Unique ID for this particular book across whole library')
     
     # https://dev.to/thepylot/how-to-add-tags-to-your-models-in-django-django-packages-series-1-3704
     # instruction how to create tags
@@ -26,3 +32,20 @@ class Media(models.Model):
     # <10.12.2022> [alexej]     updated SwVersion: "1.0.1" to "2.1.0"        
     # <10.12.2022> [sebastian]  updated Description: "Can't be displayed"    
     history_log = models.TextField()
+
+    
+    # additionally fields for metadata can be added lader depended on needs
+
+
+
+    class Meta:
+        ordering = ['date_recorded']
+
+    def get_absolute_url(self):
+        """Returns the url to access a particular author instance."""
+        return reverse('media-detail', args=[str(self.id)])
+        #pass
+
+    def __str__(self):
+        """String for representing the Model object."""
+        return f'{self.title} (cal.: {self.sw_version})'
