@@ -1,47 +1,50 @@
-{% extends "blog/base.html" %} {% block content %}
+{% extends "blog/base.html" %}
+{% block content %}
 
 <p>
-  <a
-    class="btn btn-success btn-lg btn-block"
-    href="{% url 'media-new'%}"
-    role="button"
-    >Upload new Media</a
-  >
-  <a
-    class="d-flex align-items-center flex-shrink-0 p-3 link-dark text-decoration-none border-bottom"
-  >
-    <span class="fs-5 fw-semibold">List</span>
-  </a>
+    <a
+        class="btn btn-success btn-lg btn-block"
+        href="{% url 'media-new' %}"
+        role="button"
+        >Upload new Media</a
+    >
+    <a
+        class="d-flex align-items-center flex-shrink-0 p-3 link-dark text-decoration-none border-bottom"
+        >
+        <span class="fs-5 fw-semibold">List</span>
+    </a>
 </p>
 
 <div class="list-group list-group-flush border-bottom scrollarea">
-  {% for my_item in media_objects %}
-  <div class="container">
-    <a
-      class="list-group-item list-group-item-action py-3 lh-tight"
-      aria-current="true"
-    >
-      <div class="d-flex w-100 align-items-center justify-content-between">
-        <img
-          class="rounded-circle article-img"
-          {% comment %} src="../../media/default_device.jpg" {% endcomment %}
-        />
-        <strong class="mb-1">{{ my_item.title }}</strong>
-        <div class="mb-1"><strong> Uploaded by:</strong> {{ my_item.author }}</div>
-        <div class="mb-1 small">
-          <div class="row">Version: {{ my_item.sw_version }}</div>
-          {% comment %} <div class="row">Tags: {{ item.tags }}</div> {% endcomment %}
-        </div>
-        <small>
-          <button class="btn btn-primary" type="button">...</button>
-          <button class="btn btn-danger" type="button">X</button>
-        </small>
-      </div>
-    </a>
-  </div>
-  {% empty %}
-  <span class="fs-5 fw-semibold">There is no media yet</span>
-  {% endfor %}
+    {% for my_item in media_objects %}
+    <div class="container">
+        <a
+            class="list-group-item list-group-item-action py-3 lh-tight"
+            aria-current="true"
+            >
+            <div class="d-flex w-100 align-items-center justify-content-between">
+                {% comment %} <img
+                    class="rounded-circle article-img"
+                    src="../../media/default_device.jpg"
+                /> {% endcomment %}
+                <strong class="mb-1">{{ my_item.title }}</strong>
+                <div class="mb-1"><strong> Uploaded by:</strong> {{ my_item.author }}</div>
+                <div class="mb-1 small">
+                    <div class="row">Version: {{ my_item.sw_version }}</div>
+                    {% comment %} <div class="row">Tags: {{ item.tags }}</div> {% endcomment %}
+                </div>
+                <small>
+                    <button class="btn btn-primary" type="button">Open</button>
+                    <button class="btn btn-danger" type="button">Delete</button>
+                </small>
+                
+            </div>
+            <p>
+        </a>
+    </div>
+    {% empty %}
+    <span class="fs-5 fw-semibold">There is no media yet</span>
+    {% endfor %}
 </div>
 
 {% endblock content %}
