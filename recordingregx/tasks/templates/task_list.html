@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo App</title>
+</head>
+
+<body>
+    <form method="post" action="{{ action_uri }}">
+        {% csrf_token %}
+        <!-- {{task_form}} to display all -->
+        {{task_form.title}} <!-- to display particular field-->
+        <button type="submit">SUBMIT</button>
+    </form>
+    <form action="/tasks" method="get">
+        <select name="paginate_by" onchange='this.form.submit()'>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+        </select>
+    </form>
+    {% for task in tasks %}
+    <p>{{ forloop.counter }}. {{ task.title }} - {{ task.completed }}
+        (<a href="{% url 'tasks:task_update' task.id %}">Update</a> |
+        <a href="{% url 'tasks:task_delete' task.id %}">Delete</a>)
+    </p>
+{% endfor %}
+    {% if is_paginated %}
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+    
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+    
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+    {% endif %}
+</body>
+</html>
