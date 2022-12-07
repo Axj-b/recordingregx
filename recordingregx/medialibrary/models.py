@@ -13,18 +13,18 @@ class Media(models.Model):
     date_uploaded = models.DateTimeField(default=timezone.now)
     date_recorded = models.DateTimeField(default=timezone.now)
     author  = models.ForeignKey(User, on_delete=models.RESTRICT)
-    descripttion = models.TextField()
+    descripttion = models.TextField(max_length=1000)
 
-    sw_version = models.TextField(max_length = 15)
+    sw_version = models.CharField(max_length = 15)
 
     id = models.UUIDField(primary_key=True, editable =False, default=uuid.uuid4, help_text='Unique ID for this particular book across whole library')
     
     # https://dev.to/thepylot/how-to-add-tags-to-your-models-in-django-django-packages-series-1-3704
     # instruction how to create tags
-    tags = TaggableManager()
+    #tags = TaggableManager(blank=True)
     
     
-    path_to_media = models.SlugField(editable=True, unique=True)
+    path_to_media = models.TextField(editable=True)
     
     # add a line of the change done by user and date
     # format example
@@ -48,4 +48,4 @@ class Media(models.Model):
 
     def __str__(self):
         """String for representing the Model object."""
-        return f'{self.title} (cal.: {self.sw_version})'
+        return f'{self.title} (sw_version.: {self.sw_version})'

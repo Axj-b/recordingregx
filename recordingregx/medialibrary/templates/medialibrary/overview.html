@@ -15,7 +15,7 @@
 </p>
 
 <div class="list-group list-group-flush border-bottom scrollarea">
-  {% for item in objects_list  %}
+  {% for my_item in media_objects %}
   <div class="container">
     <a
       class="list-group-item list-group-item-action py-3 lh-tight"
@@ -26,11 +26,11 @@
           class="rounded-circle article-img"
           {% comment %} src="../../media/default_device.jpg" {% endcomment %}
         />
-        <strong class="mb-1">{{ item.title }}</strong>
-        <div class="mb-1"><strong> Uploaded by:</strong> {{ item.author }}</div>
+        <strong class="mb-1">{{ my_item.title }}</strong>
+        <div class="mb-1"><strong> Uploaded by:</strong> {{ my_item.author }}</div>
         <div class="mb-1 small">
-          <div class="row">Version: {{ item.sw_version }}</div>
-          <div class="row">Tags: {{ item.tags }}</div>
+          <div class="row">Version: {{ my_item.sw_version }}</div>
+          {% comment %} <div class="row">Tags: {{ item.tags }}</div> {% endcomment %}
         </div>
         <small>
           <button class="btn btn-primary" type="button">...</button>
@@ -40,7 +40,7 @@
     </a>
   </div>
   {% empty %}
-  <span class="fs-5 fw-semibold">There are no media yet</span>
+  <span class="fs-5 fw-semibold">There is no media yet</span>
   {% endfor %}
 </div>
 

@@ -5,15 +5,15 @@ from django.contrib.auth.decorators import login_required
 
 #@login_required #make available for everybody
 def overview(request):
-
+    
     context = {
-    'devices': Media.objects.all() # return all media 
+    'media_objects': Media.objects.all() # return all media 
     }
     return render(request, 'medialibrary/overview.html', context)
 
 
 @login_required
-def new_device(request):
+def new_media(request):
     # return HttpResponse('<h1> Blog Home </h1>')
     #return render(request, 'blog/home.html')
 
