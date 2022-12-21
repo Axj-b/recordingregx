@@ -82,4 +82,4 @@ def profile(request):
         'u_form': user_form,
         'p_form': profile_form
     }
-    return render(request, 'users/profile.html', context)
+    return render(request, 'accounts/profile.html', context)

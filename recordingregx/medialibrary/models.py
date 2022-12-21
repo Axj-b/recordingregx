@@ -17,7 +17,7 @@ class Media(models.Model):
 
     sw_version = models.CharField(max_length = 15)
 
-    id = models.UUIDField(primary_key=True, editable =False, default=uuid.uuid4, help_text='Unique ID for this particular book across whole library')
+    #id = models.UUIDField(primary_key=True, editable =False, default=uuid.uuid4, help_text='Unique ID for this particular book across whole library')
     
     # https://dev.to/thepylot/how-to-add-tags-to-your-models-in-django-django-packages-series-1-3704
     # instruction how to create tags
@@ -41,11 +41,25 @@ class Media(models.Model):
     class Meta:
         ordering = ['date_recorded']
 
+
+
+    def __str__(self):
+        """String for representing the Model object."""
+        return f'{self.title} (sw_version.: {self.sw_version})'
+
     def get_absolute_url(self):
         """Returns the url to access a particular author instance."""
         return reverse('media-detail', args=[str(self.id)])
         #pass
 
-    def __str__(self):
-        """String for representing the Model object."""
-        return f'{self.title} (sw_version.: {self.sw_version})'
+
+class MediaInstance(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4,
+                        help_text="Unique ID for this particular book across whole library")
+
+
+
+    def get_absolute_url(self):
+        """Returns the url to access a particular author instance."""
+        return reverse('media-detail', args=[str(self.id)])
+        #pass
